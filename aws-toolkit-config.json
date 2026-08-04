@@ -1,0 +1,25 @@
+{
+  "agentToolkitVersion": "1.0.0",
+  "awsRegion": "ap-northeast-2",
+  "mcpServers": {
+    "awsAgentToolkit": {
+      "command": "aws",
+      "args": [
+        "agent-toolkit",
+        "server"
+      ],
+      "env": {
+        "AWS_REGION": "ap-northeast-2",
+        "AWS_SDK_LOAD_CONFIG": "1"
+      }
+    }
+  },
+  "skills": [
+    "aws-agent-toolkit",
+    "graphify"
+  ],
+  "authentication": {
+    "method": "aws-login",
+    "tokenValidityHours": 12
+  }
+}

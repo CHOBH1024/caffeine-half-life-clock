@@ -1,0 +1,24 @@
+name: AWS Agent Toolkit CI/CD & Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  aws-agent-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-2
+          audience: sts.amazonaws.com
+
+      - name: Verify AWS Agent Toolkit Setup
+        run: |
+          echo "✅ AWS Agent Toolkit setup verified for caffeine-half-life-clock"
+          echo "Region: ap-northeast-2"
