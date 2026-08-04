@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://pomyjo.com/caffeine-half-life-clock/sitemap.xml
+Sitemap: https://pomyjo.com/caffeine-half-life-clock/rss.xml
