@@ -1,0 +1,16 @@
+{
+  "vibeCodingVersion": "2.0.0",
+  "cloudProvider": "aws",
+  "awsAccountId": "518951787006",
+  "region": "ap-northeast-2",
+  "orcaIntegration": {
+    "enabled": true,
+    "scanOnPush": true,
+    "cloudNativeVibeMode": "autonomous"
+  },
+  "autoDevEngine": {
+    "framework": "Vite-React",
+    "theme": "TailwindCSS-Dark",
+    "personaEngine": "9-Persona-20-Question"
+  }
+}
