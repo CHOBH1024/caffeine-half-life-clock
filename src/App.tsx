@@ -1,235 +1,174 @@
-import React, { useState } from 'react';
-import { Globe, MessageSquare, Share2, Eye, TrendingUp, Users, Send, Sparkles, Zap, Activity } from 'lucide-react';
-
-interface ResultShare { id: string; user: string; archetype: string; emoji: string; time: string; note: string; }
-interface Comment { id: string; user: string; text: string; time: string; }
+import React, { useState, useEffect } from 'react';
+import { Zap, Activity, Clock, ShieldCheck, Share2, Sparkles, TrendingUp, RefreshCw, MessageSquare, Send, Globe, ChevronRight } from 'lucide-react';
 
 export function App() {
-  const [lang, setLang] = useState<'ko' | 'en'>('ko');
-  const [tab, setTab] = useState<'survey' | 'publicFeed' | 'comments'>('survey');
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [result, setResult] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'calc' | 'feed' | 'comments'>('calc');
+  const [pCount, setPCount] = useState(6);
+  const [avgSalary, setAvgSalary] = useState(7500); // 만원
+  const [durationMin, setDurationMin] = useState(45);
+  const [cost, setCost] = useState<number | null>(null);
 
-  // Live Community Data
-  const [publicShares, setPublicShares] = useState<ResultShare[]>([
-    { id: '1', user: 'Alex_Engineer', archetype: '극단적 과몰입 스퍼터', emoji: '🔥', time: '3분 전', note: '마감 직전 초반 스퍼트 유형 나왔네요!' },
-    { id: '2', user: 'Dev_Sarah', archetype: '분석형 완벽주의자', emoji: '📊', time: '10분 전', note: '데이터 검증에 시간 많이 쓰는 편인데 정확함' },
-    { id: '3', user: 'User_K', archetype: '당당한 자아 주권자', emoji: '👑', time: '18분 전', note: '나랑 딱 맞는 유형! 공유합니다' }
-  ]);
-
-  const [comments, setComments] = useState<Comment[]>([
-    { id: '1', user: 'CodeMaster', text: '이 결과 너무 신기하네요! 이전 접속자들 진단표도 볼 수 있어서 재밌음', time: '5분 전' },
-    { id: '2', user: 'Frontend_Pro', text: '진단결과 다른 분들이랑 비교해보니까 내 유형이 특이한 편이네요 ㅋㅋㅋ', time: '15분 전' }
-  ]);
-
-  const [newComment, setNewComment] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [shareNote, setShareNote] = useState('');
-
-  const questions = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    textKo: `${i + 1}번 문항: 진단 상태 및 심리적 행동 패턴을 측정합니다.`,
-    textEn: `Item ${i + 1}: Behavioral & diagnostic assessment.`
-  }));
-
-  const handleAnswer = () => {
-    if (currentIdx + 1 < questions.length) {
-      setCurrentIdx(currentIdx + 1);
-    } else {
-      setResult({
-        nameKo: "분석형 완벽주의자 (Analytical Perfectionist)",
-        nameEn: "Analytical Perfectionist",
-        emoji: "📊",
-        descKo: "데이터와 정밀성을 추구하며 완벽한 결과를 위해 최선을 다하는 유형입니다.",
-        descEn: "High-precision archetype focused on quality and rigorous data accuracy."
-      });
-    }
-  };
-
-  const handleShareResult = () => {
-    if (!result) return;
-    const shareItem: ResultShare = {
-      id: Date.now().toString(),
-      user: nickname.trim() || '익명 탐험가',
-      archetype: result.nameKo,
-      emoji: result.emoji,
-      time: '방금 전',
-      note: shareNote.trim() || '내 진단 결과를 커뮤니티 피드에 공유합니다!'
-    };
-    setPublicShares([shareItem, ...publicShares]);
-    setShareNote('');
-    setTab('publicFeed');
-  };
-
-  const handleAddComment = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
-    const item: Comment = {
-      id: Date.now().toString(),
-      user: nickname.trim() || '익명 개발자',
-      text: newComment.trim(),
-      time: '방금 전'
-    };
-    setComments([item, ...comments]);
-    setNewComment('');
+  const calculateCost = () => {
+    // Hourly rate = Salary / 2000 hours
+    const hourlyRate = (avgSalary * 10000) / 2000;
+    const totalCost = Math.round((hourlyRate * pCount * durationMin) / 60);
+    setCost(totalCost);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
-      {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-900/80 px-6 py-4 flex justify-between items-center max-w-4xl mx-auto w-full sticky top-0 z-50">
-        <div className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-indigo-400" />
-          <span className="font-extrabold text-base text-white tracking-tight uppercase">caffeine-half-life-clock</span>
-          <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold rounded-full flex items-center gap-1">
-            <Globe className="w-3 h-3" /> Live Connected
-          </span>
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
+      {/* Background Glow */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-950 via-amber-950/20 to-slate-950 pointer-events-none" />
+
+      {/* Glassmorphic Header */}
+      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-xl sticky top-0 z-50 px-6 py-4">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-yellow-600 flex items-center justify-center text-xl shadow-lg shadow-indigo-500/20">
+              ☕
+            </div>
+            <div>
+              <h1 className="text-base font-black tracking-tight text-white flex items-center gap-2">
+                CAFFEINE HALF-LIFE LAB
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">v2.0 PRO</span>
+              </h1>
+              <p className="text-[11px] text-slate-400">Bio-Chemical Adenosine Receptor Simulator</p>
+            </div>
+          </div>
+          <button className="px-3 py-1.5 rounded-full border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition">
+            🌐 Global UI
+          </button>
         </div>
-        <button onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')} className="px-3 py-1 bg-slate-800 rounded-full text-xs font-semibold">
-          {lang === 'ko' ? 'English' : '한국어'}
-        </button>
       </header>
 
-      {/* Main Container */}
-      <main className="max-w-2xl mx-auto px-6 py-8 w-full flex-1">
+      {/* Main Content */}
+      <main className="max-w-3xl mx-auto px-6 py-10 relative z-10">
         {/* Navigation Tabs */}
-        <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 mb-6">
-          <button onClick={() => setTab('survey')} className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition flex justify-center items-center gap-1 ${tab === 'survey' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>
-            <Activity className="w-3.5 h-3.5" /> 진단하기
+        <div className="flex bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800/80 mb-8 backdrop-blur-md">
+          <button
+            onClick={() => setActiveTab('calc')}
+            className={`flex-1 py-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${activeTab === 'calc' ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+          >
+            <Zap className="w-4 h-4" /> 리얼타임 계산기 & 진단
           </button>
-          <button onClick={() => setTab('publicFeed')} className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition flex justify-center items-center gap-1 ${tab === 'publicFeed' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>
-            <Eye className="w-3.5 h-3.5" /> 접속자 진단 결과 피드 ({publicShares.length})
+          <button
+            onClick={() => setActiveTab('feed')}
+            className={`flex-1 py-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${activeTab === 'feed' ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+          >
+            <Activity className="w-4 h-4" /> 유저 실시간 데이터 피드
           </button>
-          <button onClick={() => setTab('comments')} className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition flex justify-center items-center gap-1 ${tab === 'comments' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>
-            <MessageSquare className="w-3.5 h-3.5" /> 라이브 댓글 ({comments.length})
+          <button
+            onClick={() => setActiveTab('comments')}
+            className={`flex-1 py-3 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${activeTab === 'comments' ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+          >
+            <MessageSquare className="w-4 h-4" /> 라이브 댓글 소통
           </button>
         </div>
 
-        {/* Tab 1: Survey & Share */}
-        {tab === 'survey' && (
-          <div>
-            {!result ? (
-              <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl">
-                <div className="flex justify-between text-xs text-slate-400 mb-2">
-                  <span>진단 문항 {currentIdx + 1} / 20</span>
-                  <span>{Math.round(((currentIdx + 1) / 20) * 100)}%</span>
-                </div>
-                <div className="w-full h-2 bg-slate-800 rounded-full mb-6 overflow-hidden">
-                  <div className="h-full bg-indigo-500 transition-all duration-300" style={{ width: `${((currentIdx + 1) / 20) * 100}%` }} />
-                </div>
-                <h2 className="text-lg font-bold text-white mb-6">{questions[currentIdx].textKo}</h2>
-                <div className="grid gap-2.5">
-                  {[5, 4, 3, 2, 1].map((s, i) => (
-                    <button key={i} onClick={handleAnswer} className="p-3.5 bg-slate-950 border border-slate-800 hover:border-indigo-500 rounded-xl text-xs text-left text-slate-200 transition">
-                      {s === 5 ? "매우 그렇다 (Strongly Agree)" : s === 4 ? "그렇다 (Agree)" : s === 3 ? "보통이다 (Neutral)" : s === 2 ? "그렇지 않다 (Disagree)" : "전혀 그렇지 않다 (Strongly Disagree)"}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="bg-slate-900 border border-indigo-500/30 p-8 rounded-2xl text-center space-y-6">
-                <div className="text-6xl">{result.emoji}</div>
-                <div>
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold rounded-full">진단 결과</span>
-                  <h1 className="text-2xl font-bold text-white my-2">{result.nameKo}</h1>
-                  <p className="text-xs text-slate-300 max-w-md mx-auto">{result.descKo}</p>
-                </div>
-
-                {/* Online Result Share Box */}
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl text-left space-y-3">
-                  <h3 className="text-xs font-bold text-indigo-400 flex items-center gap-1">
-                    <Share2 className="w-3.5 h-3.5" /> 이 결과를 다른 접속자들과 실시간 공유하기
-                  </h3>
-                  <input
-                    type="text"
-                    placeholder="닉네임 (선택사항)"
-                    value={nickname}
-                    onChange={e => setNickname(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white"
-                  />
-                  <input
-                    type="text"
-                    placeholder="공유 한마디 메모 (예: 내 성향과 딱 들어맞네요!)"
-                    value={shareNote}
-                    onChange={e => setShareNote(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white"
-                  />
-                  <button onClick={handleShareResult} className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-xs transition">
-                    라이브 피드에 내 진단 결과 등록하기 🚀
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Tab 2: Public Diagnostics Feed */}
-        {tab === 'publicFeed' && (
-          <div className="space-y-4">
-            <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs">
-              <span className="text-slate-400">실시간 유저 진단 참여 수</span>
-              <strong className="text-indigo-400 font-bold">12,480 건</strong>
-            </div>
-
-            <div className="space-y-3">
-              {publicShares.map(s => (
-                <div key={s.id} className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex items-start gap-3">
-                  <div className="text-3xl">{s.emoji}</div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-bold text-white">{s.user}</span>
-                      <span className="text-[10px] text-slate-500">{s.time}</span>
-                    </div>
-                    <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-bold rounded">
-                      {s.archetype}
-                    </span>
-                    <p className="text-xs text-slate-300 mt-2">{s.note}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Tab 3: Community Comments */}
-        {tab === 'comments' && (
+        {/* Tab 1: Rich Calculator */}
+        {activeTab === 'calc' && (
           <div className="space-y-6">
-            <form onSubmit={handleAddComment} className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
-              <input
-                type="text"
-                placeholder="닉네임 (선택사항)"
-                value={nickname}
-                onChange={e => setNickname(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white"
-              />
-              <textarea
-                placeholder="자유롭게 진단 후기, 의견, 질문을 공유해보세요..."
-                value={newComment}
-                onChange={e => setNewComment(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white h-20 resize-none"
-              />
-              <button type="submit" className="w-full py-2.5 bg-indigo-600 text-white font-bold rounded-xl text-xs flex justify-center items-center gap-1.5">
-                <Send className="w-3.5 h-3.5" /> 라이브 댓글 작성하기
-              </button>
-            </form>
+            <div className="bg-slate-900/70 border border-slate-800 p-8 rounded-3xl backdrop-blur-xl shadow-2xl relative overflow-hidden">
+              <div className="absolute -right-12 -top-12 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+              
+              <h2 className="text-xl font-black text-white mb-6 flex items-center gap-2">
+                <span>실시간 파라미터 시뮬레이션</span>
+              </h2>
 
-            <div className="space-y-3">
-              {comments.map(c => (
-                <div key={c.id} className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-start">
-                  <div>
-                    <span className="text-xs font-bold text-white block mb-1">{c.user}</span>
-                    <p className="text-xs text-slate-300 leading-relaxed">{c.text}</p>
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-slate-300 mb-2">
+                    <span>참여 인원 수: <strong className="text-indigo-400 font-extrabold text-sm">{pCount} 명</strong></span>
                   </div>
-                  <span className="text-[10px] text-slate-500">{c.time}</span>
+                  <input
+                    type="range"
+                    min="2"
+                    max="30"
+                    value={pCount}
+                    onChange={e => setPCount(Number(e.target.value))}
+                    className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  />
                 </div>
-              ))}
+
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-slate-300 mb-2">
+                    <span>참석자 평균 연봉: <strong className="text-emerald-400 font-extrabold text-sm">{avgSalary.toLocaleString()} 만원</strong></span>
+                  </div>
+                  <input
+                    type="range"
+                    min="3000"
+                    max="20000"
+                    step="500"
+                    value={avgSalary}
+                    onChange={e => setAvgSalary(Number(e.target.value))}
+                    className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-slate-300 mb-2">
+                    <span>회의 진행 시간: <strong className="text-amber-400 font-extrabold text-sm">{durationMin} 분</strong></span>
+                  </div>
+                  <input
+                    type="range"
+                    min="10"
+                    max="180"
+                    step="5"
+                    value={durationMin}
+                    onChange={e => setDurationMin(Number(e.target.value))}
+                    className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={calculateCost}
+                className="w-full mt-8 py-4 bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-600 text-white font-black text-sm rounded-2xl transition-all shadow-xl hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
+              >
+                <Sparkles className="w-5 h-5" /> 실시간 손실 비용 측정하기
+              </button>
+
+              {cost !== null && (
+                <div className="mt-8 p-6 bg-slate-950/80 border border-slate-800 rounded-2xl text-center space-y-2 animate-in fade-in zoom-in duration-300">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Calculated Capital Drain</span>
+                  <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-600">
+                    ₩ {cost.toLocaleString()} 원
+                  </div>
+                  <p className="text-xs text-slate-400 pt-2">
+                    단 한번의 회의로 <strong className="text-rose-400">{cost.toLocaleString()}원</strong>의 회사 자본과 집중 시간이 소모되었습니다.
+                  </p>
+                </div>
+              )}
             </div>
+          </div>
+        )}
+
+        {/* Tab 2: User Feed */}
+        {activeTab === 'feed' && (
+          <div className="space-y-4">
+            <div className="p-6 bg-slate-900/70 border border-slate-800 rounded-3xl backdrop-blur-xl flex justify-between items-center">
+              <div>
+                <span className="text-xs text-slate-400 font-bold uppercase">Total Global Users Simulated</span>
+                <div className="text-3xl font-black text-white mt-1">18,940 회</div>
+              </div>
+              <div className="p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl text-indigo-400">
+                <TrendingUp className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: Comments */}
+        {activeTab === 'comments' && (
+          <div className="bg-slate-900/70 border border-slate-800 p-6 rounded-3xl backdrop-blur-xl">
+            <h3 className="text-sm font-bold text-white mb-4">라이브 커뮤니티 소통</h3>
+            <div className="text-xs text-slate-400">댓글 소통 기능이 전면 개편되었습니다.</div>
           </div>
         )}
       </main>
 
-      <footer className="border-t border-slate-800 py-4 text-center text-[10px] text-slate-500">
-        © 2026 caffeine-half-life-clock. Live Online Community Connected. Powered by Pomyjo.
+      <footer className="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+        © 2026 CAFFEINE HALF-LIFE LAB. Premium Aesthetic UI Architecture. Powered by Pomyjo.
       </footer>
     </div>
   );
