@@ -8,5 +8,8 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "VITE_DEPLOY_TIME": "2026-08-05T23:33:25.957Z"
+  }
 }
