@@ -1,4 +1,17 @@
 User-agent: *
 Allow: /
-Sitemap: https://pomyjo.com/caffeine-half-life-clock/sitemap.xml
-Sitemap: https://pomyjo.com/caffeine-half-life-clock/rss.xml
+
+# 검색엔진 크롤러 명시
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: NaverBot
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+Sitemap: https://caffeine-half-life-clock.pomyjo.com/sitemap.xml
