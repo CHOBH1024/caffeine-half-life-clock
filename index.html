@@ -18,7 +18,12 @@
   <meta name="twitter:title" content="카페인 반감기 시계">
   <meta name="twitter:description" content="카페인 반감기 실시간 계산기 - 잠들기 최적 시간 계산">
     <meta name="description" content="카페인 반감기 실시간 계산기 - 잠들기 최적 시간 계산">
-  </head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{})}</script>
+</head>
   <body class="bg-slate-950 text-slate-100">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
