@@ -23,6 +23,46 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{})}</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "카페인 반감기는 사람마다 정말 다른가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 유전적으로 카페인을 분해하는 CYP1A2 효소의 활성도가 사람마다 달라서 같은 커피 한 잔을 마셔도 누군가는 3시간, 누군가는 9시간 넘게 각성 효과가 지속돼요. 흡연, 임신, 간 기능, 특정 약물 복용 여부도 반감기에 큰 영향을 줍니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "계산기에서 나온 시간이 실제와 다를 수도 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "이 계산기는 평균적인 약동학 데이터를 기반으로 한 추정치예요. 실제 체내 카페인 농도는 식사 여부, 수분 섭취량, 스트레스, 복용 중인 약물 등 다양한 변수에 영향을 받기 때문에 참고용 지표로 활용하시고, 정확한 진단이 필요하다면 의료 전문가와 상담하세요."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "카페인이 완전히 빠져나가야만 잠들 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "꼭 그렇지는 않아요. 카페인이 소량 남아있어도 숙면에 큰 지장이 없는 사람도 있습니다. 다만 일반적으로 취침 시점 혈중 카페인이 50mg를 넘으면 입면 시간이 길어지고 깊은 수면 비율이 줄어드는 경향이 있다는 연구 결과가 있어, 이 계산기는 50mg를 기준선으로 삼고 있어요."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "카페인을 아예 끊는 게 숙면에 가장 좋은가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "반드시 그런 것은 아니에요. 오히려 갑자기 끊으면 두통이나 피로 같은 금단 증상이 나타날 수 있어요. 중요한 것은 섭취량 자체보다 타이밍입니다. 오전~이른 오후에 즐기고, 계산기가 알려주는 컷오프 시간 이후에는 자제하는 것이 카페인을 포기하지 않으면서도 숙면을 지키는 현실적인 방법이에요."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
   <body class="bg-slate-950 text-slate-100">
     <div id="root"></div>

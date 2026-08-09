@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 body { background-color: #020617; color: #f8fafc; font-family: sans-serif; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+details > summary::-webkit-details-marker { display: none; }

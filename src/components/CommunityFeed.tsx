@@ -164,11 +164,12 @@ export function CommunityFeed({ resultType }: CommunityFeedProps) {
             />
             <button
               onClick={addShare}
-              className="px-4 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 hover:bg-amber-400 transition-colors"
+              className="px-4 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 hover:bg-amber-400 hover:scale-[1.03] active:scale-[0.98] transition-all"
             >
-              <Share2 className="w-3.5 h-3.5" /> 내 결과 공유하기
+              <Share2 className="w-3.5 h-3.5" /> 내 진단 결과 공개하기 →
             </button>
           </div>
+          <p className="text-[10px] text-slate-500">다른 사람들은 어떤 카페인 습관을 가지고 있을까요? 결과를 공유하고 비교해보세요.</p>
 
           <div className="grid gap-3 sm:grid-cols-2">
             {comments.map(c => (
