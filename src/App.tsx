@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Coffee, Timer, Moon, Brain, AlertTriangle, Sparkles, Droplets, TrendingDown, Clock } from 'lucide-react';
+import { CommunityFeed } from './components/CommunityFeed';
 
 // 카페인 데이터 (mg)
 const DRINKS = [
@@ -77,10 +78,10 @@ export function App() {
   const path = curve.map((p, i) => `${i === 0 ? 'M' : 'L'}${px(p.h).toFixed(1)},${py(p.mg).toFixed(1)}`).join(' ');
 
   const sleepStatus = sleepSafe
-    ? { text: '안전해요! 취침 시 카페인이 거의 소멸됨', color: 'text-emerald-400', bar: 'bg-emerald-500' }
+    ? { text: '안전해요! 취침 시 카페인이 거의 소멸됨', color: 'text-emerald-400', bar: 'bg-emerald-500', label: '안전 수면형' }
     : atBed > 150
-      ? { text: '위험! 취침 시 카페인 다량 잔존 → 숙면 불가', color: 'text-rose-400', bar: 'bg-rose-500' }
-      : { text: '주의! 취침 시 카페인 잔존 → 수면 질 저하 가능', color: 'text-amber-400', bar: 'bg-amber-500' };
+      ? { text: '위험! 취침 시 카페인 다량 잔존 → 숙면 불가', color: 'text-rose-400', bar: 'bg-rose-500', label: '카페인 과다형' }
+      : { text: '주의! 취침 시 카페인 잔존 → 수면 질 저하 가능', color: 'text-amber-400', bar: 'bg-amber-500', label: '주의 필요형' };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950">
@@ -301,6 +302,9 @@ export function App() {
             <li>• 카페인은 각성제일 뿐 에너지원이 아니에요 — 피로를 숨길 뿐!</li>
           </ul>
         </div>
+
+        {/* 커뮤니티 피드 */}
+        <CommunityFeed resultType={sleepStatus.label} />
       </main>
 
       <footer className="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
