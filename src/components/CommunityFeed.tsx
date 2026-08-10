@@ -11,7 +11,7 @@ interface Comment {
 }
 
 // Vercel rewrites(/api/*)로 백엔드 프록시 — 상대경로 사용
-const API = '/api';
+const API = 'https://api.pomyjo.com/api';
 const SITE = 'caffeine-half-life-clock';
 
 function timeAgo(ts: number): string {
