@@ -7,7 +7,7 @@
   <meta name="google-site-verification" content="Py_joEyt-Mm5t5RHCkNc7z76e5UlcWyNH4" />
     
     <meta name="naver-site-verification" content="pomyjo-naver-verification" />
-    <link rel="canonical" href="https://pomyjo.com/caffeine-half-life-clock" />
+    <link rel="canonical" href="https://caffeine-half-life-clock.pomyjo.com" />
     
     <meta property="og:title" content="카페인 반감기 시계">
   <meta property="og:description" content="카페인 반감기 실시간 계산기 - 잠들기 최적 시간 계산">
@@ -68,5 +68,45 @@
 </head>
   <body class="bg-slate-950 text-slate-100">
     <div id="root"></div>
-  </body>
+  
+
+<!-- 관련 진단 추천 (올진단 노하우) -->
+<div style="max-width:720px;margin:16px auto;padding:20px;background:#fffdf8;border:1px solid #e5ded2;border-radius:12px;">
+  <div style="font-size:11px;letter-spacing:2px;color:#8a6d3b;font-weight:800;text-transform:uppercase;margin-bottom:10px;">다음에 해볼 진단</div>
+  <div style="font-size:14px;font-weight:800;margin-bottom:12px;font-family:Georgia,serif;">비슷한 영역을 더 깊게 알아보세요</div>
+  <div style="line-height:1;"><a href="https://adhd-focus-radar.pomyjo.com/" style="display:inline-block;padding:8px 14px;margin:4px;border-radius:999px;background:#fffdf8;border:1px solid #ddd3c2;color:#5a5245;text-decoration:none;font-size:12px;font-weight:700;">🎯 ADHD 포커스 진단</a>
+<a href="https://burnout-prevention-radar.pomyjo.com/" style="display:inline-block;padding:8px 14px;margin:4px;border-radius:999px;background:#fffdf8;border:1px solid #ddd3c2;color:#5a5245;text-decoration:none;font-size:12px;font-weight:700;">🪫 번아웃 예방 진단</a>
+<a href="https://burnout-recovery-radar.pomyjo.com/" style="display:inline-block;padding:8px 14px;margin:4px;border-radius:999px;background:#fffdf8;border:1px solid #ddd3c2;color:#5a5245;text-decoration:none;font-size:12px;font-weight:700;">🪫 번아웃 회복 진단</a>
+</div>
+  <div style="margin-top:12px;font-size:11px;color:#7a7060;">
+    <a href="https://all-jindan.pomyjo.com/" style="color:#8a6d3b;font-weight:700;text-decoration:none;">올진단</a>에서 76개 진단을 모아보고, 4축 통합 분석으로 나를 정리해보세요.
+  </div>
+</div>
+<!-- 재진단 리마인더 (4주 경과 시) -->
+<div id="alljindan-reremind" style="display:none;max-width:720px;margin:16px auto;padding:14px 20px;background:#f7f2e9;border:1px solid #e5ded2;border-radius:10px;font-size:13px;color:#5a5245;">
+  🔄 <strong>한 달이 지났어요!</strong> 이 진단을 다시 받으면 변화를 확인할 수 있어요.
+  <button onclick="document.getElementById('alljindan-reremind').style.display='none';try{localStorage.removeItem('alljindan_visit_' + location.hostname)}catch(e){}" style="margin-left:8px;padding:4px 12px;border-radius:999px;border:1px solid rgba(138,109,59,0.4);background:rgba(138,109,59,0.1);color:#8a6d3b;font-size:11px;font-weight:700;cursor:pointer;">다시 받기</button>
+</div>
+<script>
+(function(){
+  try {
+    var key = 'alljindan_visit_' + location.hostname;
+    var last = parseInt(localStorage.getItem(key) || '0', 10);
+    var now = Date.now();
+    if (!last) { localStorage.setItem(key, String(now)); }
+    else if (now - last > 28 * 86400000) { document.getElementById('alljindan-reremind').style.display = 'block'; }
+  } catch(e) {}
+})();
+</script>
+<!-- 과학적 근거 배너 -->
+<div style="max-width: 720px; margin: 28px auto; padding: 16px 20px; background: #f7f2e9; border: 1px solid #e5ded2; border-radius: 10px; font-size: 12px; color: #5a5245; line-height: 1.7; text-align: center;">
+  🔬 이 진단은 <strong>심리학적 이론</strong>에 기반한 자기이해 도구입니다. 임상 진단을 대체하지 않습니다.<br/>
+  <a href="https://all-jindan.pomyjo.com/" style="color: #8a6d3b; font-weight: 700; text-decoration: none;">이 진단의 과학적 근거 읽기</a> · <a href="science.html" style="color: #8a6d3b; font-weight: 700; text-decoration: none;">올진단에서 76개 진단 과학 근거 보기 →</a>
+</div>
+
+<script>
+/* 올진단 분석 비콘 */
+(function(){try{var s=location.hostname.split('.')[0];fetch('https://api.pomyjo.com/api/analytics/pageview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({site:s,path:location.pathname}),keepalive:true})}catch(e){}})();
+</script>
+</body>
 </html>
